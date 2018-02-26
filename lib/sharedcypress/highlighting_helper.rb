@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Highlighting::HighlightingHelper
+module Sharedcypress::HighlightingHelper
 
   def render_measure_detail(measures)
     render partial: 'measure_detail', locals: {measures: measures}

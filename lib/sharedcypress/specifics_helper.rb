@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 # specifics helper provides general funcitonality necessary for fully
 # determining specific occurrence rationale updates
-module Highlighting::SpecificsHelper
+module Sharedcypress::SpecificsHelper
   def create_keyed_hash(input_hash)
     output = {}
     input_hash.each do |key, val|

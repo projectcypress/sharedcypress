@@ -5,7 +5,22 @@ class SharedcypressTest < Minitest::Test
     refute_nil ::Sharedcypress::VERSION
   end
 
-  def test_it_does_something_useful
-    assert false
+# test measure display
+  def test_no_IPP_display
+    assert true
+    #create file
+    #"Measure Breakdown Unavailable"
+    #"File must validate and patient must fall into the IPP for Measure Breakdown view. "
   end
+#doesn't display for no IPP
+#has populations and variables
+#collapsible
+
+# test highlights appropriately
+#specific measure...
+#test population highlights
+#test variables highlight
+#test aggregators
+#test specific occurrence
+#test bubble up (pull file from bubble up pull request)
 end
