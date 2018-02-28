@@ -4,9 +4,7 @@ module Sharedcypress::HighlightingHelper
   module_function
 
   def render_measure_detail(measures)
-    byebug
-    view_paths = Rails::Application::Configuration.new(Rails.root).paths["app/views"]
-    av_helper = ActionView::Base.new view_paths
+    av_helper = ActionView::Base.new File.join(File.dirname(__FILE__), '../../', 'app', 'views')
     av_helper.render partial: 'measure_detail', locals: {measures: measures}
   end
 
