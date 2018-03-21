@@ -36,5 +36,5 @@
 <% if temporal_reference[:reference] == 'MeasurePeriod' %>
   Measurement Period
 <% else %>
-  <%= render partial: 'data_criteria', locals: {reference: temporal_reference[:reference], expand_variable: false, measure: measure, tag: "span"} %>
+  <%= render partial: 'data_criteria', locals: {reference: temporal_reference[:reference], expand_variable: false, parameters: parameters, tag: "span"} %>
 <% end %>

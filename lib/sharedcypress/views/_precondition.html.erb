@@ -3,7 +3,7 @@
   <ul id="precondition_<%= precondition[:id] %>">
     <li>
       <% reference = ("precondition_"+parent_precondition[:id].to_s) %>
-      <% rat_ref = ActionView::Helpers::HighlightingHelper.final_rationale_ref(reference)%>
+      <% rat_ref = ActionView::Helpers::HighlightingHelper.final_rationale_ref(reference, parameters)%>
       <span class="conjunction <%= parent_precondition[:id] %> rationale eval-<%= rat_ref %>">
         <b>
           <% if parent_negation %>
@@ -20,10 +20,10 @@
 
 <% if precondition[:preconditions] %>
   <% precondition[:preconditions].each do |prec| %>
-    <%= render partial: 'precondition', locals: {precondition: prec, parent_precondition:precondition, parent_negation: precondition[:negation], measure: measure} %>
+    <%= render partial: 'precondition', locals: {precondition: prec, parent_precondition:precondition, parent_negation: precondition[:negation], parameters: parameters} %>
   <% end %>
 <% else %>
-  <%= render partial: 'data_criteria', locals: {reference: precondition[:reference], expand_variable: false, measure: measure, negatedParent: parent_negation,tag: "span"} %>
+  <%= render partial: 'data_criteria', locals: {reference: precondition[:reference], expand_variable: false, parameters: parameters, negatedParent: parent_negation,tag: "span"} %>
 <% end %>
 
 <% unless suppress %>

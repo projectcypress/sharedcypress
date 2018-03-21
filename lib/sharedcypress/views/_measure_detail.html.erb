@@ -6,6 +6,7 @@
     <% @specifics = @patient_cache.value[:finalSpecifics] %>
     <% @measure = measure %>
     <% @updated_rationale = ActionView::Helpers::HighlightingHelper.specifics_rationale(@measure, @rationale, @specifics) %>
+    <% parameters = { :measure => @measure, :patient_cache => @patient_cache, :rationale => @rationale, :specifics => @specifics, :updated_rationale => @updated_rationale } %>
 
     <div class="panel panel-default measure_children">
       <div class="panel-heading">
@@ -32,11 +33,11 @@
         <div class="measure-viz rationale panel-group">
           <% measure[:population_ids].values.uniq.each do |id| %>
             <% population = (measure.hqmf_document[:population_criteria].select{|k, h| h[:hqmf_id] == id }).values[0] %>
-            <% @population_key = population[:type] %>
-            <%= render partial: 'population_criteria', locals: {population: population, measure: measure} %>
+            <% parameters[:population_key] = population[:type] %>
+            <%= render partial: 'population_criteria', locals: {population: population, parameters: parameters} %>
           <% end %>
-          <% @population_key = 'VAR' %>
-          <%= render partial: 'variables', locals: {measure: measure} %>
+          <% parameters[:population_key] = 'VAR' %>
+          <%= render partial: 'variables', locals: {parameters: parameters} %>
         </div>
         <div class="d3-measure-viz">
         </div>

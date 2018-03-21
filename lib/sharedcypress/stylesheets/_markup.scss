@@ -1,0 +1,11 @@
+$test:         #269E00 !default;
+.rationale{
+  .eval-true {
+    background-color: $test;
+    color: $test;
+  }
+  .eval-false {
+    background-color: $test;
+    color: $test;
+  }
+}

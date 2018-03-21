@@ -1,9 +1,9 @@
 <span class="criteria-title">
-  <% dc_access = measure[:hqmf_document][:data_criteria] %>
+  <% dc_access = parameters[:measure][:hqmf_document][:data_criteria] %>
   <% data_criteria = dc_access[reference] %>
   <% if data_criteria && data_criteria[:children_criteria] %>
     <% unless data_criteria[:has_parent] %>
-      <% root_criteria = first_nested_criteria(dc_access[data_criteria[:children_criteria][0]]) %>
+      <% root_criteria = ActionView::Helpers::HighlightingHelper.first_nested_criteria(dc_access[data_criteria[:children_criteria][0]]) %>
       <% if root_criteria[:specific_occurrence] && !(root_criteria[:description].include? "Occurrence") %>
         Occurrence <%= root_criteria[:specific_occurrence] %>:
       <% end %>
@@ -20,15 +20,15 @@
       <% data_criteria[:children_criteria].each do |child| %>
         <li>
           <span class="sr-only sr-highlight-status"></span>
-          <%= render partial: 'data_criteria', locals: {reference: child, expand_variable: false, measure: measure, tag: "span"} %>
+          <%= render partial: 'data_criteria', locals: {reference: child, expand_variable: false, parameters: parameters, tag: "span"} %>
         </li>
       <% end %>
       <% if data_criteria[:temporal_references] %>
         <% data_criteria[:temporal_references].each do |temp_ref| %>
           <li>
-            <% sat_rat_ref = ActionView::Helpers::HighlightingHelper.final_rationale_ref(reference)%>
+            <% sat_rat_ref = ActionView::Helpers::HighlightingHelper.final_rationale_ref(reference, parameters)%>
             <span class="sat rationale-target rationale eval-<%= sat_rat_ref %>">
-              <%= render partial: 'temporal_reference', locals: {temporal_reference: temp_ref, measure: measure, tag: "span"} %>
+              <%= render partial: 'temporal_reference', locals: {temporal_reference: temp_ref, parameters: parameters, tag: "span"} %>
             </span>
           </li>
         <% end %>

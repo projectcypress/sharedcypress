@@ -1,15 +1,15 @@
-<% @rat_ref = ActionView::Helpers::HighlightingHelper.final_rationale_ref(reference)%>
+<% rat_ref = ActionView::Helpers::HighlightingHelper.final_rationale_ref(reference, parameters)%>
 
-<% data_criteria = measure[:hqmf_document][:data_criteria][reference] %>
+<% data_criteria = parameters[:measure][:hqmf_document][:data_criteria][reference] %>
 <%# check attributes %>
 <% unless data_criteria %>
-  <% data_criteria = measure[:hqmf_document][:source_data_criteria][reference] %>
+  <% data_criteria = parameters[:measure][:hqmf_document][:source_data_criteria][reference] %>
 <% end %>
 
 <% if data_criteria %>
   <% if data_criteria[:subset_operators] && data_criteria[:subset_operators].length>0 %>
     <% data_criteria[:subset_operators].each do |so| %>
-      <span class="rationale eval-<%= @rat_ref %>">
+      <span class="rationale eval-<%= rat_ref %>">
         <%= render partial: 'subset_operator', locals: {subset_operator:so, tag: "span"} %>
       </span>
     <% end %>
@@ -18,14 +18,14 @@
 
   <% if data_criteria[:type] == 'derived' && (!data_criteria[:variable] || expand_variable) %>
     <% if data_criteria[:definition] == 'satisfies_all' ||  data_criteria[:definition] == 'satisfies_any' %>
-      <span class="rationale eval-<%= @rat_ref %>">
-        <%= render partial: 'satisfies', locals: {reference: reference, measure:measure, tag: "span"} %>
+      <span class="rationale eval-<%= rat_ref %>">
+        <%= render partial: 'satisfies', locals: {reference: reference, parameters: parameters, tag: "span"} %>
       </span>
     <% elsif data_criteria[:children_criteria] %>
       <% if data_criteria[:derivation_operator] == 'INTERSECT' ||
             data_criteria[:derivation_operator] == 'UNION' &&
             !expand_variable %>
-        <ul><li><span class="set-op rationale-target rationale eval-<%= @rat_ref %>">
+        <ul><li><span class="set-op rationale-target rationale eval-<%= rat_ref %>">
           <%= data_criteria[:derivation_operator] %> of:
         </span></li>
       <% end %>
@@ -39,19 +39,19 @@
             <% end %>
           <% else %>
             <li>
-              <span class="conjunction rationale-target rationale eval-<%= @rat_ref %>">
+              <span class="conjunction rationale-target rationale eval-<%= rat_ref %>">
                 <%= (data_criteria[:derivation_operator] == 'XPRODUCT')? 'AND':'' %>: <span class="sr-only sr-highlight-status"></span>
               </span>
           <% end %>
-            <%= render partial: 'data_criteria', locals: {reference: child, expand_variable: false, measure:measure, tag: "span"} %>
+            <%= render partial: 'data_criteria', locals: {reference: child, expand_variable: false, parameters: parameters, tag: "span"} %>
           </li>
         <% end %>
         <% if data_criteria[:temporal_references] %>
           <% data_criteria[:temporal_references].each do |temp_ref| %>
             <li>
-              <% temp_rat_ref = ActionView::Helpers::HighlightingHelper.final_rationale_ref(reference)%>
+              <% temp_rat_ref = ActionView::Helpers::HighlightingHelper.final_rationale_ref(reference, parameters)%>
               <span class="rationale-target rationale eval-<%= temp_rat_ref %>">
-                <%= render partial: 'temporal_reference', locals: {temporal_reference: temp_ref, measure:measure, tag: "span"} %>
+                <%= render partial: 'temporal_reference', locals: {temporal_reference: temp_ref, parameters: parameters, tag: "span"} %>
               </span>
             </li>
           <% end %>
@@ -64,7 +64,7 @@
       <% end %>
     <% end %>
   <% else %>
-    <span class="rationale eval-<%= @rat_ref %>">
+    <span class="rationale eval-<%= rat_ref %>">
       <span class="criteria-title">
         <% if data_criteria[:specific_occurrence] && !(data_criteria[:description].include? "Occurrence") %>
           Occurrence <%= data_criteria[:specific_occurrence] %>:
@@ -72,7 +72,7 @@
         <% if data_criteria[:variable] && !(data_criteria[:description].include? "$") %>$<% end %><%= data_criteria[:description] %>
 
         <% if data_criteria[:value] && data_criteria[:type]!= 'characteristic' %>
-          <%= render partial: 'value', locals: {value: data_criteria[:value], range_comparison: "", measure: measure, tag: "span"} %>
+          <%= render partial: 'value', locals: {value: data_criteria[:value], range_comparison: "", parameters: parameters, tag: "span"} %>
         <% end %>
 
         <% if data_criteria[:field_values] %>
@@ -81,7 +81,7 @@
             <% if value[:type] == 'ANYNonNull' %>
               (<%= HQMF::DataCriteria::FIELDS[key][:title] %>)
             <% else %>
-              <%= render partial: 'value', locals: {value: value, range_comparison: "", measure: measure, tag: "span"} %>
+              <%= render partial: 'value', locals: {value: value, range_comparison: "", parameters: parameters, tag: "span"} %>
             <% end %>
           <% end %>
         <% end %>
@@ -107,15 +107,15 @@
       <% if data_criteria[:temporal_references].length > 1 %>
         <ul class="multi-statement">
           <% data_criteria[:temporal_references].each do |temp_ref| %>
-            <span class="rationale eval-<%= @rat_ref %>">
-              <li><%= render partial: 'temporal_reference', locals: {temporal_reference: temp_ref, measure: measure, tag: "span"} %></li>
+            <span class="rationale eval-<%= rat_ref %>">
+              <li><%= render partial: 'temporal_reference', locals: {temporal_reference: temp_ref, parameters: parameters, tag: "span"} %></li>
             </span>
           <% end %>
         </ul>
       <% else %>
         <% data_criteria[:temporal_references].each do |temp_ref| %>
-          <span class="rationale eval-<%= @rat_ref %>">
-            <%= render partial: 'temporal_reference', locals: {temporal_reference: temp_ref, measure: measure, tag: "span"} %>
+          <span class="rationale eval-<%= rat_ref %>">
+            <%= render partial: 'temporal_reference', locals: {temporal_reference: temp_ref, parameters: parameters, tag: "span"} %>
           </span>
         <% end %>
       <% end %>

@@ -12,6 +12,7 @@ module ActionView
   # module_function
 
       def self.render_measure_detail(measures, patient_cache_all)
+        ::Sass.load_paths << File.join(File.dirname(__FILE__), 'stylesheets')
         av_helper = ActionView::Base.new File.join(File.dirname(__FILE__), 'views')
         av_helper.render partial: 'measure_detail', locals: {measures: measures, patient_cache_all: patient_cache_all}
       end
@@ -72,20 +73,24 @@ module ActionView
         updated_rationale
       end
 
-      def self.final_rationale_ref(reference)
-        return nil if @population_key == 'OBSERV'
+      def self.final_rationale_ref(reference, parameters)
+        rationale = parameters[:rationale]
+        specifics = parameters[:specifics]
+        population_key = parameters[:population_key]
+        updated_rationale = parameters[:updated_rationale]
+        return nil if population_key == 'OBSERV'
         rat_ref = nil
-        if @specifics[@population_key] || @population_key == 'VAR'
-          rat_ref = @rationale[reference]
+        if specifics[population_key] || population_key == 'VAR'
+          rat_ref = rationale[reference]
           rat_ref = rat_ref[:results].count > 0 if rat_ref.is_a?(Hash)
-          if @population_key != 'VAR' &&
-             @updated_rationale[@population_key] &&
-             @updated_rationale[@population_key].key?(reference)
-            rat_ref = @updated_rationale[@population_key][reference]
+          if population_key != 'VAR' &&
+             updated_rationale[population_key] &&
+             updated_rationale[population_key].key?(reference)
+            rat_ref = updated_rationale[population_key][reference]
           end
         end
 
-        return 'bad-specifics' if should_star?(reference)
+        return 'bad-specifics' if should_star?(reference, specifics, population_key, updated_rationale)
         rat_ref
       end
 
@@ -103,11 +108,11 @@ module ActionView
       #   end
       # end
 
-      def self.should_star?(reference)
-        (@specifics[@population_key] &&
-              @population_key != 'VAR' &&
-              @updated_rationale[@population_key] &&
-              @updated_rationale[@population_key].key?(reference))
+      def self.should_star?(reference, specifics, population_key, updated_rationale)
+        (specifics[population_key] &&
+              population_key != 'VAR' &&
+              updated_rationale[population_key] &&
+              updated_rationale[population_key].key?(reference))
       end
 
       def self.first_nested_criteria(criteria)
