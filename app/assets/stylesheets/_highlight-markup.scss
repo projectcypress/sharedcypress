@@ -1,0 +1,54 @@
+$brand-success:         #269E00 !default;
+$brand-danger:          #8A0018 !default;
+
+$state-success-bg:      lighten(desaturate($brand-success, 30%), 65%) !default;
+$state-success-text:    darken($brand-success, 10%) !default;
+$state-danger-bg:       lighten(desaturate($brand-danger, 30%), 68%) !default;
+$state-danger-text:     darken($brand-danger, 10%) !default;
+
+$fa-check:              "\f00c";
+$fa-times:              "\f00d";
+$fa-asterisk:           "\f069";
+
+.rationale {
+
+  border-bottom-width: 4px;
+  line-height: 1.7;
+
+  .eval-true {
+    background-color: $state-success-bg;
+    color: $state-success-text;
+    border-bottom-color: $state-success-text;
+    border-bottom-style: solid;
+
+    &:before {
+      content: $fa-check;
+      font-family: FontAwesome;
+    }
+  }
+
+  .eval-false {
+    background-color: $state-danger-bg;
+    color: $state-danger-text;
+    border-bottom-color: $state-danger-text;
+    border-bottom-style: double;
+
+    &:before {
+      content: $fa-times;
+      font-family: FontAwesome;
+    }
+  }
+
+  .eval-bad-specifics {
+    background-color: $state-danger-bg;
+    color: $state-danger-text;
+    border-bottom-color: $state-danger-text;
+    border-bottom-style: dashed;
+
+    &:before {
+      content: $fa-asterisk;
+      font-family: FontAwesome;
+    }
+  }
+
+}

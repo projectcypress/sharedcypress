@@ -12,7 +12,6 @@ module ActionView
   # module_function
 
       def self.render_measure_detail(measures, patient_cache_all)
-        ::Sass.load_paths << File.join(File.dirname(__FILE__), 'stylesheets')
         av_helper = ActionView::Base.new File.join(File.dirname(__FILE__), 'views')
         av_helper.render partial: 'measure_detail', locals: {measures: measures, patient_cache_all: patient_cache_all}
       end
